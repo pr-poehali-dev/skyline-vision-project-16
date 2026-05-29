@@ -1,42 +1,43 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
+import Icon from "@/components/ui/icon"
 
 const features = [
   {
-    title: "Адаптивная нейрообработка",
-    description: "Самооптимизирующиеся алгоритмы, которые обучаются на нейронных паттернах и улучшают интерпретацию сигналов.",
-    icon: "brain",
-    badge: "ИИ",
+    title: "Высокая пропускная способность",
+    description: "До 12,8 Тбит/с коммутационной матрицы. Нулевые потери пакетов при 100% нагрузке — идеально для ЦОД и High-Availability кластеров.",
+    icon: "Zap",
+    badge: "ЦОД",
   },
   {
-    title: "Медицинская защита",
-    description: "Шифрование по стандартам FDA со сквозной защитой конфиденциальных нейронных данных.",
-    icon: "lock",
+    title: "Российский реестр",
+    description: "Внесено в реестр Минпромторга РФ. Соответствует требованиям ФЗ-187 и приказа ФСТЭК для КИИ. Замена иностранного оборудования без потери функциональности.",
+    icon: "ShieldCheck",
     badge: "Сертификат",
   },
   {
-    title: "Интуитивное управление",
-    description: "Естественная трансляция мыслей в действия с откликом менее миллисекунды и точностью 99,7%.",
-    icon: "globe",
-    badge: "Точность",
+    title: "Гибкая архитектура",
+    description: "Поддержка VXLAN, EVPN, BGP, OSPF и SR-MPLS. Построение Spine-Leaf фабрик любого масштаба под корпоративные ЛВС и мультиарендные ЦОД.",
+    icon: "Network",
+    badge: "SDN",
   },
   {
-    title: "Предиктивная калибровка",
-    description: "ML-модели, которые предугадывают намерения пользователя и оптимизируют нейронные пути.",
-    icon: "zap",
-    badge: "Умный",
+    title: "Аппаратный ASIC",
+    description: "Собственный ASIC-чип с детерминированной задержкой менее 1 мкс. Аппаратная обработка ACL, QoS, зеркалирования и телеметрии.",
+    icon: "Cpu",
+    badge: "ASIC",
   },
   {
-    title: "Биометрическая интеграция",
-    description: "Бесшовная синхронизация с мониторингом жизненных показателей для контроля здоровья.",
-    icon: "link",
-    badge: "Связь",
+    title: "Отказоустойчивость",
+    description: "Горячая замена блоков питания и вентиляторов. Dual-supervisor для непрерывной работы. Время переключения при сбое — менее 50 мс (BFD + ECMP).",
+    icon: "RefreshCw",
+    badge: "HA",
   },
   {
-    title: "Поддержка XR",
-    description: "Нативная совместимость с AR/VR-средами для терапевтических и рабочих приложений.",
-    icon: "target",
-    badge: "XR Ready",
+    title: "Открытый NOS",
+    description: "Операционная система DynaOS на базе Linux с открытым API. Поддержка Ansible, Terraform, OpenConfig и gNMI для автоматизации сетевых операций.",
+    icon: "Terminal",
+    badge: "Автоматизация",
   },
 ]
 
@@ -45,9 +46,10 @@ export function FeaturesSection() {
     <section className="py-24 px-6 bg-background">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-foreground mb-4 font-sans">Возможности нового поколения</h2>
+          <p className="font-space-mono text-red-500 text-xs tracking-[0.3em] uppercase mb-4">Технические возможности</p>
+          <h2 className="text-4xl font-bold text-foreground mb-4 font-orbitron">DynaSwitch — не компромисс</h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            Почувствуйте будущее с технологиями, которые переопределяют возможное
+            Enterprise-уровень производительности, российская сертификация и полный стек автоматизации в одном решении
           </p>
         </div>
 
@@ -60,14 +62,9 @@ export function FeaturesSection() {
             >
               <CardHeader>
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-3xl">
-                    {feature.icon === "brain" && "&#129504;"}
-                    {feature.icon === "lock" && "&#128274;"}
-                    {feature.icon === "globe" && "&#127760;"}
-                    {feature.icon === "zap" && "&#9889;"}
-                    {feature.icon === "link" && "&#128279;"}
-                    {feature.icon === "target" && "&#127919;"}
-                  </span>
+                  <div className="w-10 h-10 rounded-lg bg-red-500/10 flex items-center justify-center">
+                    <Icon name={feature.icon} size={20} className="text-red-500" />
+                  </div>
                   <Badge variant="secondary" className="bg-accent text-accent-foreground">
                     {feature.badge}
                   </Badge>

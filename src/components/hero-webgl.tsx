@@ -2,6 +2,7 @@ import { Canvas, extend, useFrame } from "@react-three/fiber"
 import { useAspect, useTexture } from "@react-three/drei"
 import { useMemo, useRef, useState, useEffect } from "react"
 import * as THREE from "three"
+import { Button } from "@/components/ui/button"
 
 const TEXTUREMAP = { src: "https://i.postimg.cc/XYwvXN8D/img-4.png" }
 const DEPTHMAP = { src: "https://i.postimg.cc/2SHKQh2q/raw-4.webp" }
@@ -32,7 +33,6 @@ const Scene = () => {
       uniform float uTime;
       varying vec2 vUv;
 
-      // Simple noise function
       float random(vec2 st) {
         return fract(sin(dot(st.xy, vec2(12.9898,78.233))) * 43758.5453123);
       }
@@ -51,15 +51,12 @@ const Scene = () => {
       void main() {
         vec2 uv = vUv;
 
-        // Depth-based displacement
         float depth = texture2D(uDepthMap, uv).r;
         vec2 displacement = depth * uPointer * 0.01;
         vec2 distortedUv = uv + displacement;
 
-        // Base texture
         vec4 baseColor = texture2D(uTexture, distortedUv);
 
-        // Create scanning effect
         float aspect = ${WIDTH}.0 / ${HEIGHT}.0;
         vec2 tUv = vec2(uv.x * aspect, uv.y);
         vec2 tiling = vec2(120.0);
@@ -69,13 +66,10 @@ const Scene = () => {
         float dist = length(tiledUv);
         float dot = smoothstep(0.5, 0.49, dist) * brightness;
 
-        // Flow effect based on progress
         float flow = 1.0 - smoothstep(0.0, 0.02, abs(depth - uProgress));
 
-        // Red scanning overlay
         vec3 mask = vec3(dot * flow * 10.0, 0.0, 0.0);
 
-        // Combine effects
         vec3 final = baseColor.rgb + mask;
 
         gl_FragColor = vec4(final, 1.0);
@@ -114,8 +108,8 @@ const Scene = () => {
 }
 
 export const Hero3DWebGL = () => {
-  const titleWords = "Synapse AI".split(" ")
-  const subtitle = "Нейроинтерфейсы нового поколения."
+  const titleWords = "DynaSwitch".split(" ")
+  const subtitle = "Enterprise-коммутаторы нового поколения от российского вендора."
   const [visibleWords, setVisibleWords] = useState(0)
   const [subtitleVisible, setSubtitleVisible] = useState(false)
   const [delays, setDelays] = useState<number[]>([])
@@ -145,32 +139,101 @@ export const Hero3DWebGL = () => {
         <div className="absolute top-0 bottom-0 right-0 w-32 bg-gradient-to-l from-black to-transparent" />
       </div>
 
-      <div className="h-screen uppercase items-center w-full absolute z-[60] pointer-events-none px-10 flex justify-center flex-col">
-        <div className="text-3xl md:text-5xl xl:text-6xl 2xl:text-7xl font-extrabold font-orbitron">
-          <div className="flex space-x-2 lg:space-x-6 overflow-hidden text-white">
-            {titleWords.map((word, index) => (
-              <div
-                key={index}
-                className={index < visibleWords ? "fade-in" : ""}
-                style={{
-                  animationDelay: `${index * 0.13 + (delays[index] || 0)}s`,
-                  opacity: index < visibleWords ? undefined : 0,
-                }}
-              >
-                {word}
-              </div>
-            ))}
-          </div>
+      {/* Product image overlay */}
+      <div className="absolute inset-0 z-20 flex items-center justify-end pointer-events-none pr-4 md:pr-16">
+        <div className="w-[55%] md:w-[45%] xl:w-[40%] opacity-90 drop-shadow-2xl">
+          <img
+            src="https://cdn.poehali.dev/projects/a1418cb8-6045-4d01-92d6-d67aa7be91d1/bucket/30ec337d-84f0-4894-a19e-449a7019442a.png"
+            alt="DynaSwitch iDATA"
+            className="w-full h-auto object-contain"
+            style={{ filter: "drop-shadow(0 0 40px rgba(239,68,68,0.3))" }}
+          />
         </div>
-        <div className="text-xs md:text-xl xl:text-2xl 2xl:text-3xl mt-2 overflow-hidden text-white font-bold max-w-4xl mx-auto text-center px-4">
+      </div>
+
+      <div className="h-screen uppercase items-start w-full absolute z-[60] pointer-events-none px-8 md:px-16 flex justify-center flex-col">
+        <div className="max-w-[55%] md:max-w-[50%]">
+          {/* Brand label */}
           <div
-            className={subtitleVisible ? "fade-in-subtitle" : ""}
+            className={`font-space-mono text-red-500 text-xs md:text-sm tracking-[0.3em] mb-4 ${subtitleVisible ? "fade-in" : ""}`}
+            style={{ opacity: subtitleVisible ? undefined : 0 }}
+          >
+            iDATA · РОССИЙСКИЙ ВЕНДОР
+          </div>
+
+          <div className="text-3xl md:text-5xl xl:text-6xl 2xl:text-7xl font-extrabold font-orbitron">
+            <div className="flex flex-wrap gap-2 lg:gap-4 overflow-hidden text-white">
+              {titleWords.map((word, index) => (
+                <div
+                  key={index}
+                  className={index < visibleWords ? "fade-in" : ""}
+                  style={{
+                    animationDelay: `${index * 0.13 + (delays[index] || 0)}s`,
+                    opacity: index < visibleWords ? undefined : 0,
+                  }}
+                >
+                  {word}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="text-sm md:text-lg xl:text-xl 2xl:text-2xl mt-4 overflow-hidden text-gray-300 font-normal max-w-xl">
+            <div
+              className={subtitleVisible ? "fade-in-subtitle" : ""}
+              style={{
+                animationDelay: `${titleWords.length * 0.13 + 0.2 + subtitleDelay}s`,
+                opacity: subtitleVisible ? undefined : 0,
+                textTransform: "none",
+              }}
+            >
+              {subtitle}
+            </div>
+          </div>
+
+          {/* Stats row */}
+          <div
+            className={`flex gap-6 mt-8 ${subtitleVisible ? "fade-in" : ""}`}
             style={{
-              animationDelay: `${titleWords.length * 0.13 + 0.2 + subtitleDelay}s`,
+              animationDelay: `${titleWords.length * 0.13 + 0.6}s`,
               opacity: subtitleVisible ? undefined : 0,
+              textTransform: "none",
             }}
           >
-            {subtitle}
+            <div className="text-left">
+              <div className="font-orbitron text-2xl md:text-3xl font-bold text-red-500">100G</div>
+              <div className="font-space-mono text-gray-400 text-xs">скорость портов</div>
+            </div>
+            <div className="w-px bg-red-500/30" />
+            <div className="text-left">
+              <div className="font-orbitron text-2xl md:text-3xl font-bold text-red-500">32</div>
+              <div className="font-space-mono text-gray-400 text-xs">порта QSFP28</div>
+            </div>
+            <div className="w-px bg-red-500/30" />
+            <div className="text-left">
+              <div className="font-orbitron text-2xl md:text-3xl font-bold text-red-500">РФ</div>
+              <div className="font-space-mono text-gray-400 text-xs">реестр Минпромторг</div>
+            </div>
+          </div>
+
+          {/* CTA Buttons */}
+          <div
+            className={`flex gap-4 mt-8 pointer-events-auto ${subtitleVisible ? "fade-in" : ""}`}
+            style={{
+              animationDelay: `${titleWords.length * 0.13 + 0.9}s`,
+              opacity: subtitleVisible ? undefined : 0,
+              textTransform: "none",
+            }}
+          >
+            <Button className="bg-red-500 hover:bg-red-600 text-white font-geist border-0 text-sm md:text-base px-6 py-3">
+              Получить КП
+            </Button>
+            <Button
+              variant="outline"
+              className="border-red-500/50 text-white hover:bg-red-500/10 font-geist text-sm md:text-base px-6 py-3 bg-transparent"
+            >
+              Смотреть каталог
+            </Button>
           </div>
         </div>
       </div>
